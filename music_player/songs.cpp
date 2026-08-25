@@ -308,7 +308,7 @@ int MARIO_BROS_DURATION[] {
   8, 4, 8, 2,
   8, 4, 8, 8, 8, 8,
   8, 4, 8, 2
-}; */
+}; 
 
 int PACMAN_MELODY[] 
 {
@@ -332,7 +332,7 @@ int PACMAN_DURATION []
   32, 32, 32, 32, 32, 16, 8
 };
 
-/*int PIRATES_OF_CARIBBEAN_MELODY[]
+int PIRATES_OF_CARIBBEAN_MELODY[]
 {
   NOTE_E4, NOTE_G4, NOTE_A4, NOTE_A4, REST,
   NOTE_A4, NOTE_B4, NOTE_C5, NOTE_C5, REST,
@@ -521,11 +521,11 @@ int GODFATHER_DURATION[]
 Song HARRY_POTTER(HARRY_POTTER_MELODY, HARRY_POTTER_DURATION, sizeof(HARRY_POTTER_MELODY) / sizeof(int));
 Song ASSASSINS_CREED(ASSASSINS_CREED_MELODY, ASSASSINS_CREED_DURATION, sizeof(ASSASSINS_CREED_MELODY) / sizeof(int));
 //Song MARIO_BROS(MARIO_BROS_MELODY, MARIO_BROS_DURATION, sizeof(MARIO_BROS_MELODY) / sizeof(int));
-Song PACMAN(PACMAN_MELODY, PACMAN_DURATION, sizeof(PACMAN_MELODY) / sizeof(int));
+//Song PACMAN(PACMAN_MELODY, PACMAN_DURATION, sizeof(PACMAN_MELODY) / sizeof(int));
 //Song PIRATES_OF_CARIBBEAN(PIRATES_OF_CARIBBEAN_MELODY, PIRATES_OF_CARIBBEAN_DURATION, sizeof(PIRATES_OF_CARIBBEAN_MELODY) / sizeof(int));
 //Song GODFATHER(GODFATHER_MELODY, GODFATHER_DURATION, sizeof(GODFATHER_MELODY) / sizeof(int));
-Song songs[] = {HARRY_POTTER, ASSASSINS_CREED, /*MARIO_BROS*/ PACMAN, /*PIRATES_OF_CARIBBEAN, GODFATHER*/};
-String songList[] = {"Harry Potter", "Assassins Creed", "Mario Bros", "Pirates of Caribbean", "Godfather"};
+Song songs[] = {HARRY_POTTER, ASSASSINS_CREED, /*MARIO_BROS, PACMAN, PIRATES_OF_CARIBBEAN, GODFATHER*/};
+String songList[] = {"Harry Potter", "Assassins Creed", /*"Mario Bros", "Pirates of Caribbean", "Godfather"*/};
 
 /*void playMusic(int selection) {
   int* duration = songs[selection].getDuration();
