@@ -12,9 +12,9 @@ void setupLCD() {
   delay(500);
 }
 
-void scrollOptions() {
+/*void scrollOptions() {
 
-}
+}*/
 
 extern String songList[];
 
