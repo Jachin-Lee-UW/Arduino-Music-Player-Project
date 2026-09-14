@@ -619,6 +619,8 @@ void updateMusic()
   }
 }
 
+bool home = true;
+
 void enactControl(String command) {
   if(command == "VOL-")
   {
@@ -648,10 +650,19 @@ void enactControl(String command) {
   }
   else if(command == "SKIPFOR")
   {
-    /*while(durationSum < 5000)
+    int durationSum;
+    while(durationSum < 5000)
     {
-      
-    }*/
+      durationSum += (1000000UL / songs[songIndex].getDur(note));
+      note++;
+    }
+
+    if(note >= size)
+    {
+      musicPlaying = false;
+      digitalWrite(BUZZER_PIN, LOW);
+      return;
+    }
   }
   else if(command == "UP")
   {
@@ -663,6 +674,7 @@ void enactControl(String command) {
   }
   else if(command == "ONOFF")
   {
-    
+    home = true; 
+    musicPlaying = false;
   }
 }

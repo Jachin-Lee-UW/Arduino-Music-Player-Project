@@ -2,6 +2,7 @@
 #define LCD_RUN_H
 
 void setupLCD();
+void scrollOptions();
 void showSongPlaying(int);
 void showControl(String);
 
