@@ -18,10 +18,15 @@ void setupIR() {
   Serial.print("Receiver setup complete!");
 }
 
+uint8_t command = 0;
+
 void runIR() {
-  if (IrReceiver.decode()) {
+  now = millis();
+  if (IrReceiver.decode())
+  {
+    lastSignal = now;
     Serial.println("registered!");
-    int command = IrReceiver.decodedIRData.command;
+    command = IrReceiver.decodedIRData.command;
     IrReceiver.resume();
     switch (command)
     {
@@ -108,6 +113,7 @@ void runIR() {
       Serial.println(buttonPress);
     }
   }
+
   else
   {
     numSignalReceived = false;

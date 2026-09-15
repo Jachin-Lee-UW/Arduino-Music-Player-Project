@@ -565,10 +565,10 @@ void startNote(int selection)
   }
   else
   {
-    halfPeriod = 500000UL / notePitch;
+    halfPeriod = 500000UL / notePitch; //frequency at which buzzer is toggled high/low
   }
 
-  noteDur = 1000000UL / rawNoteDur;
+  noteDur = 1000000UL / rawNoteDur; //calculating duration in microseconds of individual note
   noteRest = 1.3 * noteDur;
 
   noteStartTime = micros();
@@ -587,7 +587,7 @@ void updateMusic()
 
   unsigned long now = micros();
   
-  if(now - noteStartTime >= noteRest)
+  if(now - noteStartTime >= noteRest) //when it's time for next note, this code gets executed 
   {
     Serial.print("next note!");
     note++;
@@ -599,7 +599,7 @@ void updateMusic()
     }
     startNote(songIndex);
   }
-  else if(now - noteStartTime >= noteDur)
+  else if(now - noteStartTime >= noteDur) //determines when the rest should occur
   {
     notePlaying = false;
     digitalWrite(BUZZER_PIN, LOW);
@@ -611,7 +611,7 @@ void updateMusic()
     digitalWrite(BUZZER_PIN, LOW);
     return;
   } 
-  else if(now - lastToggleTime >= halfPeriod && notePlaying)
+  else if(now - lastToggleTime >= halfPeriod && notePlaying) //toggling the buzzer HIGH/LOW to generate specific frequency of note
   {
     lastToggleTime = now;
     buzzerState = !buzzerState;
@@ -630,34 +630,42 @@ void enactControl(String command) {
   {
     
   }
-  else if(command == "PLAYPAUSE")
+  else if(command == "PLAYPAUSE") //stops/resumes the music
   {
     musicPlaying = !musicPlaying;
     if(musicPlaying)
     {
       Serial.print("playing!");
-      delay(10);
     }
     else
     {
       Serial.print("not playing!");
-      delay(10);
     }
   }
   else if(command == "SKIPBACK")
   {
+    unsigned long durationSum = 0; //must be unsigned long for the while loop to functions properly
+    while(durationSum < 2000UL * 1000) //milliseconds to be skipped on left, multiplied by 1000 to get duration in microseconds
+    {
+      durationSum += 1.3*(1000000UL / songs[songIndex].getDur(note));
+      note--;
+    }
 
+    if(note < 0)
+    {
+      note = 0;
+    }
   }
   else if(command == "SKIPFOR")
   {
-    int durationSum;
-    while(durationSum < 5000)
+    unsigned long durationSum = 0; //must be unsigned long for the while loop to functions properly
+    while(durationSum < 2000UL * 1000) //milliseconds to be skipped on left, multiplied by 1000 to get duration in microseconds
     {
-      durationSum += (1000000UL / songs[songIndex].getDur(note));
+      durationSum += 1.3*(1000000UL / songs[songIndex].getDur(note));
       note++;
     }
 
-    if(note >= size)
+    if(note >= size) //preventing note from going out of song duration array bounds
     {
       musicPlaying = false;
       digitalWrite(BUZZER_PIN, LOW);

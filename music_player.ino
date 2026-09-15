@@ -21,7 +21,9 @@ void loop() {
   {
     scrollOptions();
   }
+  
   runIR();
+
   if(numSignalReceived) 
   {
     showSongPlaying(buttonNum);
