@@ -21,11 +21,10 @@ void setupIR() {
 uint8_t command = 0;
 
 void runIR() {
-  now = millis();
+  unsigned long now = millis();
   if (IrReceiver.decode())
   {
-    lastSignal = now;
-    Serial.println("registered!");
+    unsigned long lastSignal = now;
     command = IrReceiver.decodedIRData.command;
     IrReceiver.resume();
     switch (command)

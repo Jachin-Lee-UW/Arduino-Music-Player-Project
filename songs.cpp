@@ -13,15 +13,34 @@ class Song {
     int size;
   public:
     Song(int* melodyArr, uint8_t* durationArr, int songSize)
-    { this->melodyArr = melodyArr; 
+    { 
+      this->melodyArr = melodyArr; 
       this->durationArr = durationArr;
-      size = songSize; }
+      size = songSize; 
+    }
   int getSize()
-  { return size; }
+  { 
+    return size; 
+  }
   int getNote(int index)
-  { return pgm_read_word(&melodyArr[index]); }
+  { 
+    return pgm_read_word(&melodyArr[index]); 
+  }
   uint8_t getDur(int index)
-  { return pgm_read_byte(&durationArr[index]); }
+  { 
+    return pgm_read_byte(&durationArr[index]);
+  }
+  bool retTrue()
+  {
+    if(size > 0)
+    {
+      return true;
+    }
+    else
+    {
+      return false;
+    }
+  }
 };
 
 //arrays storing melody (frequency) and duration information for each song. stored in PROGMEM to save space.
@@ -589,7 +608,6 @@ void updateMusic()
   
   if(now - noteStartTime >= noteRest) //when it's time for next note, this code gets executed 
   {
-    Serial.print("next note!");
     note++;
     if(note >= size) 
     {
@@ -672,13 +690,41 @@ void enactControl(String command) {
       return;
     }
   }
-  else if(command == "UP")
-  {
 
+  //
+  //neither UP nor DOWN show the changed song on LCD display yet
+  //
+  
+  else if(command == "UP") //play the song one index above the current song in songs[]
+  {
+    bool insideSongBounds = true; 
+    uint8_t maxSongIndex = 0; //keeps track of the number of songs in songs[]
+    while(insideSongBounds)
+    {
+      Serial.print("a");
+      insideSongBounds = false;                            //default set the bounds to false
+      insideSongBounds = songs[maxSongIndex].retTrue();    //if maxSongIndex outside the bounds of songs[], it won't return true
+      if(insideSongBounds)
+      {
+        maxSongIndex++;
+      }
+    }
+    maxSongIndex--;  //this prevents fence-posting from occuring (after the while loop, maxSongIndex will be one higher than it should be)
+    if(songIndex < maxSongIndex)
+    {
+      musicPlaying = false;
+      songIndex++;
+      startMusic(songIndex); 
+    }
   }
-  else if(command == "DOWN")
+  else if(command == "DOWN") //play the song one index below the current song in songs[]
   {
-
+    if(songIndex > 0)
+    {
+      musicPlaying = false;
+      songIndex--;
+      startMusic(songIndex); 
+    }
   }
   else if(command == "ONOFF")
   {
