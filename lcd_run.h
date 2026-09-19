@@ -4,6 +4,5 @@
 void setupLCD();
 void scrollOptions();
 void showSongPlaying(int);
-void showControl(String);
 
 #endif

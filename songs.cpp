@@ -1,12 +1,14 @@
-#include "pitches.h"
 #include "songs.h"
+#include "pitches.h"
+#include "lcd_run.h"
 #include <Arduino.h>
 #include <avr/pgmspace.h>
 
 #define BUZZER_PIN 9
 
 //the song class creates objects which represent each song 
-class Song {
+class Song 
+{
   private: 
     int* melodyArr;
     uint8_t* durationArr; 
@@ -530,22 +532,116 @@ const uint8_t GODFATHER_DURATION[] PROGMEM =
   2
 };
 
+const int HALO2_MELODY[] PROGMEM =
+{
+  NOTE_E4, NOTE_E4, NOTE_E4, NOTE_E5,
+  NOTE_FS4, NOTE_FS4, NOTE_FS4, NOTE_FS5,
+  NOTE_G4, NOTE_G4, NOTE_G4, NOTE_G5,
+  NOTE_A4, NOTE_A4, NOTE_A4, NOTE_A5,
+
+  NOTE_A4, NOTE_A5, NOTE_A4, NOTE_A5, NOTE_G5, NOTE_FS5,
+  
+  NOTE_E4, NOTE_E4, NOTE_E4, NOTE_E5,
+  NOTE_FS4, NOTE_FS4, NOTE_FS4, NOTE_FS5,
+  NOTE_G4, NOTE_G4, NOTE_G4, NOTE_G5,
+  NOTE_A5, NOTE_A4, NOTE_A5, NOTE_A5, NOTE_G5, NOTE_FS5,
+
+  NOTE_E4, NOTE_E4, NOTE_E4, NOTE_E5,
+  NOTE_FS4, NOTE_FS4, NOTE_FS4, NOTE_FS5,
+  NOTE_G4, NOTE_G4, NOTE_G4, NOTE_G5,
+  NOTE_A5, NOTE_A4, NOTE_A5, NOTE_A5, NOTE_G5, NOTE_FS5,
+
+  NOTE_E4, NOTE_E4, NOTE_E4, NOTE_E5
+};
+
+const uint8_t HALO2_DURATION[] PROGMEM = 
+{
+  8, 8, 8, 1,
+  8, 8, 8, 1,
+  8, 8, 8, 1,
+  8, 8, 8, 3,
+
+  8, 8, 8, 8, 8, 8,
+
+  8, 8, 8, 3,
+  8, 8, 8, 3,
+  8, 8, 8, 3,
+  8, 8, 8, 8, 8, 8,
+
+  8, 8, 8, 3,
+  8, 8, 8, 3,
+  8, 8, 8, 3,
+  8, 8, 8, 8, 8, 8,
+
+  8, 8, 8, 1
+};
+
+const int PINK_PANTHER_MELODY[] PROGMEM =
+{
+  REST, REST, REST, NOTE_DS4, 
+  NOTE_E4, REST, NOTE_FS4, NOTE_G4, REST, NOTE_DS4,
+  NOTE_E4, NOTE_FS4,  NOTE_G4, NOTE_C5, NOTE_B4, NOTE_E4, NOTE_G4, NOTE_B4,   
+  NOTE_AS4, NOTE_A4, NOTE_G4, NOTE_E4, NOTE_D4, 
+  NOTE_E4, REST, REST, NOTE_DS4,
+  
+  NOTE_E4, REST, NOTE_FS4, NOTE_G4, REST, NOTE_DS4,
+  NOTE_E4, NOTE_FS4,  NOTE_G4, NOTE_C5, NOTE_B4, NOTE_G4, NOTE_B4, NOTE_E5,
+  NOTE_DS5,   
+  NOTE_D5, REST, REST, NOTE_DS4, 
+  NOTE_E4, REST, NOTE_FS4, NOTE_G4, REST, NOTE_DS4,
+  NOTE_E4, NOTE_FS4,  NOTE_G4, NOTE_C5, NOTE_B4, NOTE_E4, NOTE_G4, NOTE_B4,   
+  
+  NOTE_AS4, NOTE_A4, NOTE_G4, NOTE_E4, NOTE_D4, 
+  NOTE_E4, REST,
+  REST, NOTE_E5, NOTE_D5, NOTE_B4, NOTE_A4, NOTE_G4, NOTE_E4,
+  NOTE_AS4, NOTE_A4, NOTE_AS4, NOTE_A4, NOTE_AS4, NOTE_A4, NOTE_AS4, NOTE_A4,   
+  NOTE_G4, NOTE_E4, NOTE_D4, NOTE_E4, NOTE_E4, NOTE_E4
+};
+
+const uint8_t PINK_PANTHER_DURATION[] PROGMEM =
+{
+  2, 4, 8, 8, 
+  4, 8, 8, 4, 8, 8,
+  8, 8,  8, 8, 8, 8, 8, 8,   
+  2, 16, 16, 16, 16, 
+  2, 4, 8, 4,
+  
+  4, 8, 8, 4, 8, 8,
+  8, 8,  8, 8, 8, 8, 8, 8,
+  1,   
+  2, 4, 8, 8, 
+  4, 8, 8, 4, 8, 8,
+  8, 8,  8, 8, 8, 8, 8, 8,   
+  
+  2, 16, 16, 16, 16, 
+  4, 4,
+  4, 8, 8, 8, 8, 8, 8,
+  16, 8, 16, 8, 16, 8, 16, 8,   
+  16, 16, 16, 16, 16, 2
+};
+
 //initialization of songs
-//song order: harry potter (0), assassin's creed (1), mario bros (2), pacman (3), pirates of the caribbean (4), the godfather (5) 
+//song order: harry potter (0), assassin's creed (1), mario bros (2), pacman (3), pirates of the caribbean (4), the godfather (5), halo 2 (6).
+//modify with your favorite songs! check out the HiBit "buzzer" repo--it contains the melody/duration arrays I've used. up to 10 songs can be added.
+
 Song HARRY_POTTER(HARRY_POTTER_MELODY, HARRY_POTTER_DURATION, sizeof(HARRY_POTTER_MELODY) / sizeof(int));
 Song ASSASSINS_CREED(ASSASSINS_CREED_MELODY, ASSASSINS_CREED_DURATION, sizeof(ASSASSINS_CREED_MELODY) / sizeof(int));
 Song MARIO_BROS(MARIO_BROS_MELODY, MARIO_BROS_DURATION, sizeof(MARIO_BROS_MELODY) / sizeof(int));
 Song PACMAN(PACMAN_MELODY, PACMAN_DURATION, sizeof(PACMAN_MELODY) / sizeof(int));
 Song PIRATES_OF_CARIBBEAN(PIRATES_OF_CARIBBEAN_MELODY, PIRATES_OF_CARIBBEAN_DURATION, sizeof(PIRATES_OF_CARIBBEAN_MELODY) / sizeof(int));
 Song GODFATHER(GODFATHER_MELODY, GODFATHER_DURATION, sizeof(GODFATHER_MELODY) / sizeof(int));
+Song HALO2(HALO2_MELODY, HALO2_DURATION, sizeof(HALO2_MELOFY) / sizeof(int));
+Song PINK_PANTHER(PINK_PANTHER_MELODY, PINK_PANTHER_DURATION, sizeof(PINK_PANTHER_MELODY) / sizeof(int));
 
-Song songs[] = {HARRY_POTTER, ASSASSINS_CREED, MARIO_BROS, PACMAN, PIRATES_OF_CARIBBEAN, GODFATHER};
-String songList[] = {"Harry Potter", "Assassins Creed", "Mario Bros", "Pacman", "Pirates of Caribbean", "Godfather"};
+Song songs[] = {HARRY_POTTER, ASSASSINS_CREED, MARIO_BROS, PACMAN, PIRATES_OF_CARIBBEAN, GODFATHER, HALO2, PINK_PANTHER};
+String songList[] = {"Harry Potter", "Assassins Creed", "Mario Bros", "Pacman", "Pirates of Caribbean", "Godfather", "Halo 2", "Pink Panther"};
 
-bool musicPlaying; //whether or not a song should be playing right now
-bool notePlaying;  //whether or not an individual not should be playing right now
-bool buzzerState;  //whether or not the buzzer is HIGH or LOW (frequency)
-int note = 0;      //index of note in the song
+uint8_t songsNum = 5; //the total number of songs in songs[]; will be used for the UP/DOWN functionality in enactCommand()
+
+bool musicPlaying;  //whether or not a song should be playing right now
+bool notePlaying;   //whether or not an individual not should be playing right now
+bool buzzerState;   //whether or not the buzzer is HIGH or LOW (frequency)
+int note = 0;       //index of note in the song
 
 unsigned long noteStartTime = 0;  //when the the note was started
 unsigned long lastToggleTime = 0; //when the buzzer was last toggled from HIGH to LOW or vice versa
@@ -637,14 +733,17 @@ void updateMusic()
   }
 }
 
-bool home = true;
+bool home = true;               //whether or not the LCD display is on the home screen (i.e. not displaying a song name)
+unsigned long durationSum = 0;  //must be unsigned long for the while loop to functions properly
+unsigned long skipDur = 2000;   //how much to skip ahead/backward in millis 
 
-void enactControl(String command) {
-  if(command == "VOL-")
+void enactControl(String command) 
+{
+  if(command == "VOL-") //DAC converter/digtial potentiometer necessary for this
   {
 
   }
-  else if(command == "VOL+")
+  else if(command == "VOL+") //DAC converter/digtial potentiometer necessary for this
   {
     
   }
@@ -662,12 +761,12 @@ void enactControl(String command) {
   }
   else if(command == "SKIPBACK")
   {
-    unsigned long durationSum = 0; //must be unsigned long for the while loop to functions properly
-    while(durationSum < 2000UL * 1000) //milliseconds to be skipped on left, multiplied by 1000 to get duration in microseconds
+    while(durationSum < skipDur * 1000) //milliseconds to be skipped on left, multiplied by 1000 to get duration in microseconds
     {
       durationSum += 1.3*(1000000UL / songs[songIndex].getDur(note));
       note--;
     }
+    durationSum = 0;
 
     if(note < 0)
     {
@@ -676,12 +775,12 @@ void enactControl(String command) {
   }
   else if(command == "SKIPFOR")
   {
-    unsigned long durationSum = 0; //must be unsigned long for the while loop to functions properly
-    while(durationSum < 2000UL * 1000) //milliseconds to be skipped on left, multiplied by 1000 to get duration in microseconds
+    while(durationSum < skipDur * 1000) //milliseconds to be skipped on left, multiplied by 1000 to get duration in microseconds
     {
       durationSum += 1.3*(1000000UL / songs[songIndex].getDur(note));
       note++;
     }
+    durationSum = 0;
 
     if(note >= size) //preventing note from going out of song duration array bounds
     {
@@ -690,31 +789,14 @@ void enactControl(String command) {
       return;
     }
   }
-
-  //
-  //neither UP nor DOWN show the changed song on LCD display yet
-  //
-  
   else if(command == "UP") //play the song one index above the current song in songs[]
   {
-    bool insideSongBounds = true; 
-    uint8_t maxSongIndex = 0; //keeps track of the number of songs in songs[]
-    while(insideSongBounds)
-    {
-      Serial.print("a");
-      insideSongBounds = false;                            //default set the bounds to false
-      insideSongBounds = songs[maxSongIndex].retTrue();    //if maxSongIndex outside the bounds of songs[], it won't return true
-      if(insideSongBounds)
-      {
-        maxSongIndex++;
-      }
-    }
-    maxSongIndex--;  //this prevents fence-posting from occuring (after the while loop, maxSongIndex will be one higher than it should be)
-    if(songIndex < maxSongIndex)
+    if(songIndex < songsNum)
     {
       musicPlaying = false;
       songIndex++;
       startMusic(songIndex); 
+      showSongPlaying(songIndex);
     }
   }
   else if(command == "DOWN") //play the song one index below the current song in songs[]
@@ -724,6 +806,7 @@ void enactControl(String command) {
       musicPlaying = false;
       songIndex--;
       startMusic(songIndex); 
+      showSongPlaying(songIndex);
     }
   }
   else if(command == "ONOFF")

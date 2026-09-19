@@ -1,8 +1,8 @@
-#include <Arduino.h>
-#include <IRremote.hpp>
 #include "irmodule.h"
 #include "songs.h"
 #include "lcd_run.h"
+#include <Arduino.h>
+#include <IRremote.hpp>
 
 #define IR_RECEIVE_PIN 2
 
@@ -12,7 +12,8 @@ String buttonPress = "";    //the command of the button last pressed on the IR r
 bool numSignalReceived = false;      //whether or not a numerical button command has been receieved 
 bool commandSignalReceived = false;  //whether or not a non-numerical button command has been receieved
 
-void setupIR() {
+void setupIR() 
+{
   Serial.begin(9600);
   IrReceiver.begin(IR_RECEIVE_PIN, ENABLE_LED_FEEDBACK);
   Serial.print("Receiver setup complete!");
@@ -27,8 +28,8 @@ void runIR() {
     unsigned long lastSignal = now;
     command = IrReceiver.decodedIRData.command;
     IrReceiver.resume();
-    switch (command)
-    {
+    switch (command) //below are the cases for the IR remote I have, which is a generic remote that came with an ELEGOO Arduino kit. 
+    {                //switch the case values to work for your remote.
       case 22:
         buttonNum = 0;
         numSignalReceived = true;
